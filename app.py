@@ -5,7 +5,7 @@ import tensorflow as tf
 import time
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw 
 import cv2
 import io
 import base64
