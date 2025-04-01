@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 import tensorflow as tf
+from waitress import serve
 import time
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
@@ -413,6 +414,4 @@ def analyze_image():
     return jsonify({'error': 'Failed to process image'})
 
 if __name__ == '__main__':
-    # Save hero image SVG before starting the app
-    save_hero_image()
-    app.run(port=5141, debug=True)  # Use port 5200 for the app
+    serve(app, host='0.0.0.0', port=5141)
