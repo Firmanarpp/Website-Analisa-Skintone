@@ -109,11 +109,11 @@ CLOTHING_RECOMMENDATIONS = {
 def load_model_and_labels():
     try:
         # Load model
-        model_path = 'models\mobilenetv2_mst_model94.h5'
+        model_path = r'models\mobilenetv2_mst_model94.h5'
         model = load_model(model_path)
         
         # Load class labels
-        with open('models\mst_class_labels.json', 'r') as f:
+        with open(r'models\mst_class_labels.json', 'r') as f:
             class_labels = json.load(f)
         
         return model, class_labels
