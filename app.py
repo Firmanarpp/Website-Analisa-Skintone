@@ -415,4 +415,4 @@ def analyze_image():
 if __name__ == '__main__':
     # Save hero image SVG before starting the app
     save_hero_image()
-    app.run(port=5001)
+    app.run(port=5141, debug=True)  # Use port 5200 for the app
