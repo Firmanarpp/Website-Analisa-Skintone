@@ -59,49 +59,74 @@ MST_COLORS = [
 
 # Clothing color recommendations by skin tone group
 CLOTHING_RECOMMENDATIONS = {
-    'light': {  # MST1-3
+    'light': {  # MST1-2
         'recommended': [
             {'name': 'Navy Blue', 'hex': '#000080'},
-            {'name': 'Emerald Green', 'hex': '#046307'},
             {'name': 'Royal Purple', 'hex': '#7851a9'},
+            {'name': 'Emerald Green', 'hex': '#046307'},
             {'name': 'Burgundy', 'hex': '#800020'},
             {'name': 'Sapphire Blue', 'hex': '#0f52ba'}
         ],
         'avoid': [
-            {'name': 'Beige', 'hex': '#f5f5dc'},
-            {'name': 'Pale Pink', 'hex': '#fadadd'},
-            {'name': 'Light Yellow', 'hex': '#fffacd'},
-            {'name': 'Off-White', 'hex': '#f8f8ff'}
+            {'name': 'Orange', 'hex': '#ffa500'},
+            {'name': 'Bright Yellow', 'hex': '#ffff00'},
+            {'name': 'Pastel Colors', 'hex': '#fadadd'}
         ]
     },
-    'medium': {  # MST4-7
+    'light medium': {  # MST3-4
         'recommended': [
-            {'name': 'Olive Green', 'hex': '#556b2f'},
-            {'name': 'Gold', 'hex': '#ffd700'},
-            {'name': 'Burnt Orange', 'hex': '#cc5500'},
+            {'name': 'Teal', 'hex': '#008080'},
             {'name': 'Cobalt Blue', 'hex': '#0047ab'},
+            {'name': 'Lavender', 'hex': '#e6e6fa'},
+            {'name': 'Ruby Red', 'hex': '#9b111e'},
+            {'name': 'Forest Green', 'hex': '#228b22'}
+        ],
+        'avoid': [
+            {'name': 'Brown', 'hex': '#5c4033'},
+            {'name': 'Khaki', 'hex': '#c3b091'},
+            {'name': 'Olive', 'hex': '#808000'}
+        ]
+    },
+    'medium': {  # MST5-6
+        'recommended': [
+            {'name': 'Coral', 'hex': '#ff7f50'},
+            {'name': 'Turquoise', 'hex': '#40e0d0'},
+            {'name': 'Olive Green', 'hex': '#556b2f'},
+            {'name': 'Royal Blue', 'hex': '#4169e1'},
             {'name': 'Magenta', 'hex': '#c71585'}
         ],
         'avoid': [
-            {'name': 'Pastel Yellow', 'hex': '#fdfd96'},
-            {'name': 'Bright Orange', 'hex': '#ff4500'},
             {'name': 'Neon Colors', 'hex': '#39ff14'},
-            {'name': 'Ashy Gray', 'hex': '#b2beb5'}
+            {'name': 'White', 'hex': '#ffffff'},
+            {'name': 'Black', 'hex': '#000000'}
         ]
     },
-    'dark': {  # MST8-10
+    'medium deep': {  # MST7-8
         'recommended': [
-            {'name': 'Bright White', 'hex': '#ffffff'},
-            {'name': 'Fuchsia', 'hex': '#ff00ff'},
-            {'name': 'Lime Green', 'hex': '#32cd32'},
-            {'name': 'Bright Yellow', 'hex': '#ffff00'},
-            {'name': 'Sky Blue', 'hex': '#87ceeb'}
+            {'name': 'Gold', 'hex': '#ffd700'},
+            {'name': 'Mustard Yellow', 'hex': '#ffdb58'},
+            {'name': 'Orange', 'hex': '#ffa500'},
+            {'name': 'Kelly Green', 'hex': '#4cbb17'},
+            {'name': 'Electric Blue', 'hex': '#7df9ff'}
         ],
         'avoid': [
-            {'name': 'Dark Brown', 'hex': '#5c4033'},
-            {'name': 'Black', 'hex': '#000000'},
-            {'name': 'Navy Blue', 'hex': '#000080'},
-            {'name': 'Dark Purple', 'hex': '#301934'}
+            {'name': 'Pastel Colors', 'hex': '#fadadd'},
+            {'name': 'Beige', 'hex': '#f5f5dc'},
+            {'name': 'Silver', 'hex': '#c0c0c0'}
+        ]
+    },
+    'deep': {  # MST9-10
+        'recommended': [
+            {'name': 'Bright Yellow', 'hex': '#ffff00'},
+            {'name': 'Fuchsia', 'hex': '#ff00ff'},
+            {'name': 'Lime Green', 'hex': '#32cd32'},
+            {'name': 'Bright Orange', 'hex': '#ff4500'},
+            {'name': 'Aqua', 'hex': '#00ffff'}
+        ],
+        'avoid': [
+            {'name': 'Dark Colors', 'hex': '#2f4f4f'},
+            {'name': 'Brown', 'hex': '#5c4033'},
+            {'name': 'Navy', 'hex': '#000080'}
         ]
     }
 }
@@ -292,13 +317,17 @@ def preprocess_image(img_array, target_size=(224, 224)):
 # Get skin tone group based on MST index
 def get_skin_tone_group(mst_index):
     index = int(mst_index.replace('MST', ''))
-    if 1 <= index <= 3:
+    if 1 <= index <= 2:
         return 'light'
-    elif 4 <= index <= 7:
+    elif 3 <= index <= 4:
+        return 'light medium'
+    elif 5 <= index <= 6:
         return 'medium'
-    else:  # 8-10
-        return 'dark'
-
+    elif 7 <= index <= 8:
+        return 'medium deep'
+    else:  # 9-10
+        return 'deep'
+    
 @app.route('/')
 def index():
     return render_template('index.html', mst_colors=MST_COLORS)
@@ -414,4 +443,6 @@ def analyze_image():
     return jsonify({'error': 'Failed to process image'})
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    port = int(os.environ.get('PORT', 5000))
+    print(f"Server starting on http://localhost:{port}")
+    serve(app, host='0.0.0.0', port=port)
