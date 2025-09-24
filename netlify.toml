@@ -1,7 +1,0 @@
-[build]
-  base = "frontend"
-  command = "npm run build"
-  publish = "build"
-
-[functions]
-  directory = "frontend/netlify/functions"
